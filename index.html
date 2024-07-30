@@ -15,6 +15,18 @@
         <p>We appreciate you following Similar Movies Online. Stay tuned for the best movie recommendations and updates!</p>
         <button id="backButton">❮ Go Back</button>
     </div>
+    <script async='async' src='https://sdki.truepush.com/sdk/v2.0.4/app.js' type='application/javascript'/>
+    <script>
+    var truepush = window.truepush || [];
+            
+    truepush.push(function(){
+        truepush.Init({
+            id: &quot;66a7e78bf48596a999643da9&quot;
+        },function(error){
+          if(error) console.error(error);
+        })
+    })
+    </script>
 <script src="./script.js" defer></script>
 </body>
 </html>
