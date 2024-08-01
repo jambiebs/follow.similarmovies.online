@@ -8,6 +8,31 @@
     <meta name="author" content="Similar Movies Online">
     <title>Thank You - Similar Movies Online</title>
     <link rel="stylesheet" href="./style.css">
+	<style>
+  .flower-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  #flower {
+    width: 100px;
+    height: 100px;
+  }
+  .petal {
+    fill: #808000;
+    opacity: 0.8;
+    animation: petalAnimation 2s infinite;
+  }
+  .center {
+    fill: #ffeb3b;
+  }
+  @keyframes petalAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+</style>
     <script id="script">
 	var s = document.createElement("script")
 	s.src = "https://notix.io/ent/current/enot.min.js"
