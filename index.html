@@ -8,6 +8,19 @@
     <meta name="author" content="Similar Movies Online">
     <title>Thank You - Similar Movies Online</title>
     <link rel="stylesheet" href="./style.css">
+    <script id="script">
+	var s = document.createElement("script")
+	s.src = "https://notix.io/ent/current/enot.min.js"
+	s.onload = function (sdk) {
+		sdk.startInstall(
+			{
+				"appId": "1007737e766ab6c31a3e55590bf3627",
+				"loadSettings": true
+			}
+		)
+	}
+	document.head.append(s)
+</script>
 </head>
 <body>
     <div class="container">
@@ -15,76 +28,6 @@
         <p>We appreciate you following Similar Movies Online. Stay tuned for the best movie recommendations and updates!</p>
         <button id="backButton">❮ Go Back</button>
     </div>
-    
-<script type='module'>
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js';
-    import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js';
-  
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCvAshe0Yvqik3Y5roqdA0T4ZqwyYKhRCI",
-      authDomain: "similarmovies-bb176.firebaseapp.com",
-      projectId: "similarmovies-bb176",
-      storageBucket: "similarmovies-bb176.appspot.com",
-      messagingSenderId: "520740462999",
-      appId: "1:520740462999:web:d8f419b7fc23b6166ca4d2",
-      measurementId: "G-M9HC31VTFM"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const messaging = getMessaging(app);
-  
-    // Register the service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('https://follow.similarmovies.online/firebase-messaging-sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-          messaging.useServiceWorker(registration);
-        }).catch((err) => {
-          console.log('Service Worker registration failed:', err);
-        });
-    }
-  
-    // Request permission and get token
-    async function initFCM() {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          const currentToken = await getToken(messaging, { vapidKey: 'BFbvYs05iTjMRFrljSpTfZQhNzqh1Ss63Yb_Ej24wH_CPLrzXhN8Q-wxc5prCTe7k_hY-HYc71lmdrRhMAdFIvo' });
-          if (currentToken) {
-            console.log('FCM Token:', currentToken);
-            // You can send this token to your server and store it to send notifications
-          } else {
-            console.log('No registration token available. Request permission to generate one.');
-          }
-        } else {
-          console.log('Unable to get permission to notify.');
-        }
-      } catch (error) {
-        console.error('An error occurred while retrieving token. ', error);
-      }
-    }
-  
-    initFCM();
-  
-    // Handle incoming messages
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // Customize notification here
-      const notificationTitle = payload.notification.title;
-      const notificationOptions = {
-        body: payload.notification.body,
-        icon: payload.notification.icon
-      };
-  
-      new Notification(notificationTitle, notificationOptions);
-    });
-  </script>
-    <script type="application/javascript" src="https://sdki.truepush.com/sdk/v2.0.4/app.js" async></script>
 <script src="./script.js" defer></script>
 </body>
 </html>
