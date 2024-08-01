@@ -29,5 +29,33 @@
         <button id="backButton">❮ Go Back</button>
     </div>
 <script src="./script.js" defer></script>
+<script>
+// Function to set a cookie
+function setCookie(name, value, days, domain) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/; domain=" + domain;
+}
+
+// Function to check if notifications are granted and set the cookie
+function checkNotificationAndSetCookie() {
+    if (Notification.permission === "granted") {
+        setCookie("hm-notify", "true", 365, ".similarmovies.online");
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function(permission) {
+            if (permission === "granted") {
+                setCookie("hm-notify", "true", 365, ".similarmovies.online");
+            }
+        });
+    }
+}
+
+// Run the function to check notification permission and set the cookie
+checkNotificationAndSetCookie();
+</script>
 </body>
 </html>
