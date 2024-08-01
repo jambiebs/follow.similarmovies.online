@@ -32,30 +32,28 @@
 <script>
 // Function to set a cookie
 function setCookie(name, value, days, domain) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/; domain=" + domain;
+  var expires = "";
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/; domain=" + domain;
 }
 
-// Function to check if notifications are granted and set the cookie
-function checkNotificationAndSetCookie() {
-    if (Notification.permission === "granted") {
-        setCookie("hm-notify", "true", 365, ".similarmovies.online");
-    } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(function(permission) {
-            if (permission === "granted") {
-                setCookie("hm-notify", "true", 365, ".similarmovies.online");
-            }
-        });
-    }
+function deleteCookie(name, domain) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + domain;
 }
 
-// Run the function to check notification permission and set the cookie
-checkNotificationAndSetCookie();
+function checkNotificationAndUpdateCookie() {
+  if (Notification.permission === "granted") {
+      setCookie("hm-notify", "true", 365, ".similarmovies.online");
+  } else {
+      deleteCookie("hm-notify", ".similarmovies.online");
+  }
+}
+checkNotificationAndUpdateCookie();
+setInterval(checkNotificationAndUpdateCookie, 1000);
 </script>
 </body>
 </html>
