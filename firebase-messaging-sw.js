@@ -23,9 +23,9 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: payload.notification.icon || '/default-icon.png',
+    icon: payload.notification.icon,
     data: {
-      notifURL: payload.data.url || '/' // Ensure URL is in data
+      notifURL: payload.data.url
     }
   };
 
@@ -34,9 +34,9 @@ messaging.onBackgroundMessage((payload) => {
 
 // Handle notification click events
 self.addEventListener('notificationclick', (event) => {
-  event.notification.close(); // Close the notification
+  event.notification.close();
   const url = event.notification.data.notifURL;
   event.waitUntil(
-    clients.openWindow(url) // Open the URL when the notification is clicked
+    clients.openWindow(url)
   );
 });
