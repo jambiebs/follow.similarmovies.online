@@ -17,25 +17,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Handle background messages from FCM
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.icon,
-    data: {
-      notifURL: payload.data.url
-    }
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
 // Handle notification click events
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = event.notification.data.notifURL;
+  const url = event.notification.data && event.notification.data.notifURL ? event.notification.data.notifURL : '/';
   event.waitUntil(
     clients.openWindow(url)
   );
