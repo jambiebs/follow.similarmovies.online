@@ -34,9 +34,9 @@
   </div>
   <!--firebase integration starts from here-->
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging.js';
-    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
+    import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCvAshe0Yvqik3Y5roqdA0T4ZqwyYKhRCI",
@@ -59,7 +59,6 @@
       }).then((currentToken) => {
         if (currentToken) {
           // console.log("Token is: "+currentToken);
-          // Send the token to firestore
           addDoc(collection(db, "tokens"), {
             token: currentToken
           }).then(() => {
@@ -67,6 +66,7 @@
           }).catch((error) => {
             console.error("Error saving token to Firestore: ", error);
           });
+          // Send the token to firestore
           // ...
         } else {
           // Show permission request UI
