@@ -17,37 +17,32 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Handle messages when the web app is in the foreground.
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload);
-});
-
-// Handle background messages and display notifications.
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-// Notification payload
-  const notificationTitle = payload.notification?.title || 'Default Title';
+
+  const hasNotification = payload.notification && Object.keys(payload.notification).length > 0;
+  const hasData = payload.data && Object.keys(payload.data).length > 0;
+
+  const notificationTitle = hasNotification ? payload.notification.title : 'Default Title';
   const notificationOptions = {
-    body: payload.notification?.body || 'Default body',
-    icon: './hm-icon-192x192.png',
+    body: hasNotification ? payload.notification.body : 'Default body',
+    icon: '/firebase-logo.png',
+    tag: payload.messageId || 'default-tag', // Use messageId or another unique identifier
     data: {
-      url: payload.data?.url || 'https://www.similarmovies.online'
+      url: payload.data?.url || '/'
     }
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  if (hasNotification || hasData) {
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  }
 });
 
-// Handle notification click events
 self.addEventListener('notificationclick', (event) => {
   event.notification.close(); // Close the notification
 
-  // Check if the notification has a URL
-  const url = event.notification.data.url || 'https://www.similarmovies.online';
-
-  // Open the URL in a new tab
+  const url = event.notification.data.url || '/'; // Default URL
   event.waitUntil(
-    clients.openWindow(url)
+    clients.openWindow(url) // Open the URL
   );
 });
