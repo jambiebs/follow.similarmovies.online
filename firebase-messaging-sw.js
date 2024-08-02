@@ -20,32 +20,16 @@ const messaging = firebase.messaging();
 // Handle background messages from FCM
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/hm-icon-192x192.png',
+    icon: payload.notification.icon || '/default-icon.png',
     data: {
-      notifURL: payload.data.url || '/' // Use payload.data.url for the URL
+      notifURL: payload.data.url || '/' // Ensure URL is in data
     }
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
-// Handle push events (when the service worker is active)
-self.addEventListener('push', (event) => {
-  const notification = event.data.json();
-  const title = notification.title;
-  const options = {
-    body: notification.body,
-    icon: './hm-icon-192x192.png',
-    data: {
-      notifURL: notification.url || '/' // Use notification.url from data
-    }
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
 });
 
 // Handle notification click events
