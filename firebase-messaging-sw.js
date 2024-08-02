@@ -22,7 +22,7 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   // Ensure event.data is accessed correctly
-  const url = event.notification.data.url;
+  const url = event.data.url;
   event.waitUntil(
     clients.openWindow(url)
   );
