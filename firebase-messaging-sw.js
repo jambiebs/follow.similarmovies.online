@@ -64,7 +64,7 @@ self.addEventListener('push', (e) => {
   const notificationTitle = data.notification?.title || 'Default Title';
   const notificationOptions = {
     body: data.notification?.body || 'Default body',
-    icon: '/firebase-logo.png',
+    icon: './hm-icon-192x192.png',
     tag: data.messageId || 'default-tag',
     data: {
       url: data.data?.url || '/' // Ensure URL is in data
