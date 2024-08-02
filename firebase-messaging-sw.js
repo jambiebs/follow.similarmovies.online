@@ -20,47 +20,39 @@ const messaging = firebase.messaging();
 // Handle background messages from FCM
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/firebase-logo.png',
+    icon: '/hm-icon-192x192.png',
     data: {
-      notifURL: payload.notification.click_action || '/'
+      notifURL: payload.data.url || '/' // Use payload.data.url for the URL
     }
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// Existing push event listener
-self.addEventListener("push", (event) => {
+// Handle push events (when the service worker is active)
+self.addEventListener('push', (event) => {
   const notification = event.data.json();
-  event.waitUntil(self.registration.showNotification(notification.title, {
+  const title = notification.title;
+  const options = {
     body: notification.body,
-    icon: "./hm-icon-192x192.png",
+    icon: './hm-icon-192x192.png',
     data: {
-      notifURL: notification.url
+      notifURL: notification.url || '/' // Use notification.url from data
     }
-  }));
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
-// Handle notification click
-self.addEventListener("notificationclick", (event) => {
+// Handle notification click events
+self.addEventListener('notificationclick', (event) => {
   event.notification.close(); // Close the notification
-  event.waitUntil(clients.openWindow(event.notification.data.notifURL));
+  const url = event.notification.data.notifURL;
+  event.waitUntil(
+    clients.openWindow(url) // Open the URL when the notification is clicked
+  );
 });
-
-// self.addEventListener("push", (event) => {
-//   const notification = event.data.json();
-//   event.waitUntil(self.registration.showNotification(notification.title, {
-//       body: notification.body,
-//       icon: "./hm-icon-192x192.png",
-//       data: {
-//           notifURL: notification.url
-//       }
-//   }));
-// });
-
-// self.addEventListener("notificationclick", (event) => {
-//   event.waitUntil(clients.openWindow(event.notification.data.notifURL));
-// });
