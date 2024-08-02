@@ -54,7 +54,7 @@
 
     navigator.serviceWorker.register("./firebase-messaging-sw.js").then(registration => {
       getToken(messaging, {
-        ServiceWorkerRegistration: registration,
+        serviceWorkerRegistration: registration,
         vapidKey: 'BFbvYs05iTjMRFrljSpTfZQhNzqh1Ss63Yb_Ej24wH_CPLrzXhN8Q-wxc5prCTe7k_hY-HYc71lmdrRhMAdFIvo'
       }).then((currentToken) => {
         if (currentToken) {
