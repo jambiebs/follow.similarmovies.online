@@ -20,7 +20,9 @@ const messaging = firebase.messaging();
 // Handle notification click events
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = event.notification.data && event.notification.data.notifURL ? event.notification.data.notifURL : '/';
+
+  // Ensure event.data is accessed correctly
+  const url = event.notification.data.url;
   event.waitUntil(
     clients.openWindow(url)
   );
