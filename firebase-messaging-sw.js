@@ -16,14 +16,3 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-
-// Handle notification click events
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-
-  // Ensure event.data is accessed correctly
-  const url = event.notification.url;
-  event.waitUntil(
-    clients.openWindow(url)
-  );
-});
