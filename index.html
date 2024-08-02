@@ -11,29 +11,32 @@
   <title>Thank You - Similar Movies Online</title>
   <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
   <!-- website content goes here -->
   <div class="container">
     <h1>Thank You!</h1>
-  <div class="flower-animation">
-        <svg version="1.1" id="flower" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
-            <g>
-                <circle class="petal" cx="50" cy="30" r="10"/>
-                <circle class="petal" cx="70" cy="50" r="10"/>
-                <circle class="petal" cx="50" cy="70" r="10"/>
-                <circle class="petal" cx="30" cy="50" r="10"/>
-                <circle class="center" cx="50" cy="50" r="8"/>
-            </g>
-        </svg>
+    <div class="flower-animation">
+      <svg version="1.1" id="flower" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 100 100">
+        <g>
+          <circle class="petal" cx="50" cy="30" r="10" />
+          <circle class="petal" cx="70" cy="50" r="10" />
+          <circle class="petal" cx="50" cy="70" r="10" />
+          <circle class="petal" cx="30" cy="50" r="10" />
+          <circle class="center" cx="50" cy="50" r="8" />
+        </g>
+      </svg>
     </div>
     <p>We appreciate you following Similar Movies Online. Stay tuned for the best movie recommendations and updates!</p>
-    <button id="backButton"><a href="https://www.similarmovies.online" style="color: white; text-decoration: none;">❮ Go Back</a></button>
-</div>
+    <button id="backButton"><a href="https://www.similarmovies.online" style="color: white; text-decoration: none;">❮ Go
+        Back</a></button>
+  </div>
   <!--firebase integration starts from here-->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getMessaging , getToken } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging.js';
-    import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+    import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCvAshe0Yvqik3Y5roqdA0T4ZqwyYKhRCI",
@@ -47,24 +50,33 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
+    const db = getFirestore(app);
 
     navigator.serviceWorker.register("./firebase-messaging-sw.js").then(registration => {
-      getToken(messaging, { 
+      getToken(messaging, {
         ServiceWorkerRegistration: registration,
-        vapidKey: 'BFbvYs05iTjMRFrljSpTfZQhNzqh1Ss63Yb_Ej24wH_CPLrzXhN8Q-wxc5prCTe7k_hY-HYc71lmdrRhMAdFIvo' }).then((currentToken) => {
-      if (currentToken) {
-        console.log("Token is: "+currentToken);
-        // Send the token to your server and update the UI if necessary
+        vapidKey: 'BFbvYs05iTjMRFrljSpTfZQhNzqh1Ss63Yb_Ej24wH_CPLrzXhN8Q-wxc5prCTe7k_hY-HYc71lmdrRhMAdFIvo'
+      }).then((currentToken) => {
+        if (currentToken) {
+          // console.log("Token is: "+currentToken);
+          // Send the token to firestore
+          addDoc(collection(db, "tokens"), {
+            token: currentToken
+          }).then(() => {
+            console.log("Token saved to Firestore successfully. Token is: " + currentToken);
+          }).catch((error) => {
+            console.error("Error saving token to Firestore: ", error);
+          });
+          // ...
+        } else {
+          // Show permission request UI
+          console.log('No registration token available. Request permission to generate one.');
+          // ...
+        }
+      }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
         // ...
-      } else {
-        // Show permission request UI
-        console.log('No registration token available. Request permission to generate one.');
-        // ...
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
-      // ...
-    });
+      });
     });
   </script>
   <script src="./script.js" defer></script>
