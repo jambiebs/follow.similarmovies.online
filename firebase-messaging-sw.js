@@ -26,7 +26,7 @@ messaging.onBackgroundMessage((payload) => {
   const title = data.title;
   const options = {
     body: data.body,
-    icon: './hm-icon-192x192.png'
+    icon: './hm-icon-192x192.png',
     data: {
       url: data.click_action
     }
