@@ -17,13 +17,27 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Handle messages when the web app is in the foreground
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload);
-  // Handle foreground messages if necessary
-});
-
 // Handle background messages and display notifications
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+  // Extract data from the payload
+  const data = payload.data;
+  const title = data.title;
+  const options = {
+    body: data.body,
+    icon: './hm-icon-192x192.png'
+    data: {
+      url: data.click_action
+    }
+  };
+
+  self.registration.showNotification(title, options);
+});
+
+// Handle notification click events
+self.addEventListener('notificationclick', (event) => {
+  const url = event.notification.data.url;
+  event.notification.close();
+  event.waitUntil(clients.openWindow(url));
 });
