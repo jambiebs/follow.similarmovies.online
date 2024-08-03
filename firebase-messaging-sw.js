@@ -17,22 +17,36 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Handle messages when the web app is in the foreground.
+// Handle messages when the web app is in the foreground
 messaging.onMessage((payload) => {
   console.log('Message received. ', payload);
-  // ...
+  // Handle foreground messages if necessary
 });
 
-// Handle background messages and display notifications.
+// Handle background messages and display notifications
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-  // Customize notification
-  const notificationTitle = payload.notification?.title;
+  // Extract data from the payload
+  const data = payload.data || {};
+  const notificationTitle = data.title || 'Default Title';
   const notificationOptions = {
-    body: payload.notification?.body,
-    icon: payload.notification?.icon
+    body: data.body,
+    icon: './hm-icon-192x192.png',
+    data: {
+      url: data.click_action || 'https://www.similarmovies.online'
+    }
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Handle notification click events
+self.addEventListener('notificationclick', (event) => {
+  const notification = event.notification;
+  const url = notification.data.url || 'https://www.similarmovies.online';
+
+  event.waitUntil(
+    clients.openWindow(url)
+  );
 });
