@@ -27,24 +27,27 @@ messaging.onMessage((payload) => {
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-  // Extract data from the payload
-  const data = payload.data || {};
-  const notificationTitle = data.title || 'Default Title';
-  const notificationOptions = {
-    body: data.body,
-    icon: './hm-icon-192x192.png',
-    data: {
-      url: data.click_action || 'https://www.similarmovies.online'
-    }
-  };
+  // Directly use data from the payload
+  const title = payload.data?.title || '';
+  const body = payload.data?.body || '';
+  const icon = payload.data?.icon || './hm-icon-192x192.png';
+  const url = payload.data?.click_action || 'https://www.similarmovies.online';
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // Show the notification only if the title is present
+  if (title) {
+    self.registration.showNotification(title, {
+      body: body,
+      icon: icon,
+      data: {
+        url: url
+      }
+    });
+  }
 });
 
 // Handle notification click events
 self.addEventListener('notificationclick', (event) => {
-  const notification = event.notification;
-  const url = notification.data.url || 'https://www.similarmovies.online';
+  const url = event.notification.data.url;
 
   event.waitUntil(
     clients.openWindow(url)
