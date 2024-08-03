@@ -12,10 +12,10 @@ body {
 
 .container {
     text-align: center;
-    border: 2px solid #004aad;
     padding: 50px;
+    margin: 20px;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: #eded6f21;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
