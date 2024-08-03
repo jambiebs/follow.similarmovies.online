@@ -43,12 +43,12 @@ function checkNotificationAndUpdateButton() {
         } else {
           console.log('Notification permission denied');
         }
+      }).catch((error) => {
+        console.error('Error requesting notification permission:', error);
       });
     };
   }
 }
 
 document.addEventListener('DOMContentLoaded', checkNotificationAndUpdateButton);
-
-checkNotificationAndUpdateButton();
 setInterval(checkNotificationAndUpdateButton, 1000);
