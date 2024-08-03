@@ -52,6 +52,7 @@
 
 // document.addEventListener('DOMContentLoaded', checkNotificationAndUpdateButton);
 // setInterval(checkNotificationAndUpdateButton, 1000);
+// Function to set a cookie
 function setCookie(name, value, days, domain) {
   var expires = "";
   if (days) {
@@ -63,6 +64,7 @@ function setCookie(name, value, days, domain) {
   console.log(`Cookie set: ${name}=${value}, Domain=${domain}`); // Debugging line
 }
 
+// Function to get a cookie
 function getCookie(name) {
   var nameEQ = name + "=";
   var ca = document.cookie.split(';');
@@ -74,17 +76,20 @@ function getCookie(name) {
   return null;
 }
 
+// Function to delete a cookie
 function deleteCookie(name, domain) {
   document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + domain;
   console.log(`Cookie deleted: ${name}, Domain=${domain}`); // Debugging line
 }
 
+// Function to update the button based on cookie
 function updateButtonBasedOnCookie() {
   const actionButton = document.getElementById('actionButton');
   if (!actionButton) {
     console.error('Button element not found.');
     return;
   }
+  
   const notifyCookie = getCookie("hm-notify");
   console.log(`Cookie value: ${notifyCookie}`); // Debugging line
 
@@ -110,7 +115,7 @@ function updateButtonBasedOnCookie() {
   }
 }
 
-// Initial button update
+// Set up initial button update and interval
 document.addEventListener('DOMContentLoaded', function() {
   updateButtonBasedOnCookie();
   // Set up interval to check and update the button every 1000 ms
