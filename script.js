@@ -81,7 +81,14 @@ function deleteCookie(name, domain) {
 
 function updateButtonBasedOnCookie() {
   const actionButton = document.getElementById('actionButton');
-  if (getCookie("hm-notify") === "true") {
+  if (!actionButton) {
+    console.error('Button element not found.');
+    return;
+  }
+  const notifyCookie = getCookie("hm-notify");
+  console.log(`Cookie value: ${notifyCookie}`); // Debugging line
+
+  if (notifyCookie === "true") {
     actionButton.textContent = "❮ Go Back";
     actionButton.onclick = function() {
       window.history.back();
