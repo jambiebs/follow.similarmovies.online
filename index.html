@@ -1,78 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="Thank you for following Similar Movies Online. Stay tuned for updates and recommendations on the best movies to watch.">
-  <meta name="keywords" content="Similar Movies, Movie Recommendations, Thank You, Follow, Best Movies">
-  <meta name="author" content="Similar Movies Online">
-  <title>Thank You - Similar Movies Online</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thank you for following Similar Movies Online. Stay tuned for updates and recommendations on the best movies to watch.">
+    <meta name="keywords" content="Similar Movies, Movie Recommendations, Thank You, Follow, Best Movies">
+    <meta name="author" content="Similar Movies Online">
+    <title>Thank You - Similar Movies Online</title>
+<link rel="stylesheet" href="./style.css">
+    <script id="script">
+	var s = document.createElement("script")
+	s.src = "https://notix.io/ent/current/enot.min.js"
+	s.onload = function (sdk) {
+		sdk.startInstall(
+			{
+				"appId": "1007737e766ab6c31a3e55590bf3627",
+				"loadSettings": true
+			}
+		)
+	}
+	document.head.append(s)
+</script>
 </head>
-
 <body>
-  <!-- website content goes here -->
-  <div class="container">
-    <h1>Thank You!</h1>
-    <div class="flower-animation">
-      <svg version="1.1" id="flower" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 100 100">
-        <g>
-          <circle class="petal" cx="50" cy="30" r="10" />
-          <circle class="petal" cx="70" cy="50" r="10" />
-          <circle class="petal" cx="50" cy="70" r="10" />
-          <circle class="petal" cx="30" cy="50" r="10" />
-          <circle class="center" cx="50" cy="50" r="8" />
-        </g>
-      </svg>
+    <div class="container">
+        <h1>Thank You!</h1>
+        <div class="flower-animation">
+            <svg version="1.1" id="flower" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+                <g>
+                    <circle class="petal" cx="50" cy="30" r="10"/>
+                    <circle class="petal" cx="70" cy="50" r="10"/>
+                    <circle class="petal" cx="50" cy="70" r="10"/>
+                    <circle class="petal" cx="30" cy="50" r="10"/>
+                    <circle class="center" cx="50" cy="50" r="8"/>
+                </g>
+            </svg>
+        </div>
+        <p>We appreciate you following Similar Movies Online. Stay tuned for the best movie recommendations and updates!</p>
+        <button id="backButton"><a href="https://www.similarmovies.online" style="color: white; text-decoration: none;">❮ Go Back</a></button>
     </div>
-    <p>We appreciate you following Similar Movies Online. Stay tuned for the best movie recommendations and updates!</p>
-    <button id="actionButton">Subscribe</button>
-  </div>
-  <!--firebase integration starts from here-->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-    import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js';
-    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCvAshe0Yvqik3Y5roqdA0T4ZqwyYKhRCI",
-      authDomain: "similarmovies-bb176.firebaseapp.com",
-      projectId: "similarmovies-bb176",
-      storageBucket: "similarmovies-bb176.appspot.com",
-      messagingSenderId: "520740462999",
-      appId: "1:520740462999:web:d8f419b7fc23b6166ca4d2",
-      measurementId: "G-M9HC31VTFM"
-    };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-    const db = getFirestore(app);
-
-    navigator.serviceWorker.register("./firebase-messaging-sw.js").then(registration => {
-      getToken(messaging, {
-        serviceWorkerRegistration: registration,
-        vapidKey: 'BFbvYs05iTjMRFrljSpTfZQhNzqh1Ss63Yb_Ej24wH_CPLrzXhN8Q-wxc5prCTe7k_hY-HYc71lmdrRhMAdFIvo'
-      }).then((currentToken) => {
-        if (currentToken) {
-          // console.log("Token is: "+currentToken);
-          addDoc(collection(db, "tokens"), {
-            token: currentToken
-          }).then(() => {
-            console.log("Token saved to Firestore successfully. Token is: " + currentToken);
-          }).catch((error) => {
-            console.error("Error saving token to Firestore: ", error);
-          });
-        } else {
-          console.log('No registration token available. Request permission to generate one.');
-        }
-      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-      });
-    });
-  </script>
-  <script src="./script.js"></script>
+<script src="./script.js"></script>
 </body>
 </html>
