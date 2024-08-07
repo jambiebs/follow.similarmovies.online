@@ -21,6 +21,23 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-  // No need to manually show a notification if the payload contains a notification
-  // The FCM SDK will handle it
+  // Extract data from the payload
+  const data = payload.data;
+  const title = data.title;
+  const options = {
+    body: data.body,
+    icon: './hm-icon-192x192.png',
+    data: {
+      url: data.click_action
+    }
+  };
+
+  self.registration.showNotification(title, options);
+});
+
+// Handle notification click events
+self.addEventListener('notificationclick', (event) => {
+  const url = event.notification.data.url;
+  event.notification.close();
+  event.waitUntil(clients.openWindow(url));
 });
