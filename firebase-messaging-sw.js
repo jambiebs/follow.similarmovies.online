@@ -21,23 +21,27 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-  // Extract data from the payload
-  const data = payload.data;
-  const title = data.title;
-  const options = {
-    body: data.body,
-    icon: './hm-icon-192x192.png',
-    data: {
-      url: data.click_action
-    }
-  };
-
-  self.registration.showNotification(title, options);
+  // No need to manually show a notification if the payload contains a notification
+  // The FCM SDK will handle it
 });
 
 // Handle notification click events
 self.addEventListener('notificationclick', (event) => {
-  const url = event.notification.data.url;
-  event.notification.close();
-  event.waitUntil(clients.openWindow(url));
+  const notification = event.notification;
+  const data = notification.data;
+  const url = data && data.url ? data.url : 'https://www.bing.com'; // Default to Bing if URL is not specified
+
+  notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      for (let client of windowClients) {
+        if (client.url === url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(url);
+      }
+    })
+  );
 });
