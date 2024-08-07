@@ -24,24 +24,3 @@ messaging.onBackgroundMessage((payload) => {
   // No need to manually show a notification if the payload contains a notification
   // The FCM SDK will handle it
 });
-
-// Handle notification click events
-self.addEventListener('notificationclick', (event) => {
-  const notification = event.notification;
-  const data = notification.data;
-  const url = data && data.url ? data.url : 'https://www.bing.com'; // Default to Bing if URL is not specified
-
-  notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      for (let client of windowClients) {
-        if (client.url === url && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow(url);
-      }
-    })
-  );
-});
